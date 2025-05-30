@@ -2,7 +2,7 @@
 
 This project implements a comprehensive end-to-end test automation suite for AutomationExercise.com using Playwright with MCP server integration. The test suite automates a complete e-commerce user journey from registration to order completion.
 
-[![Playwright Tests](https://github.com/username/playwright-automation-exercise/actions/workflows/playwright.yml/badge.svg)](https://github.com/username/playwright-automation-exercise/actions/workflows/playwright.yml)
+[![Playwright Tests](https://github.com/vjgit-369/playwright-automation-exercise/actions/workflows/playwright.yml/badge.svg)](https://github.com/vjgit-369/playwright-automation-exercise/actions/workflows/playwright.yml)
 
 ## Project Structure
 
