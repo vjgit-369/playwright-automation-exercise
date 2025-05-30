@@ -1,0 +1,77 @@
+trigger:
+  - main
+  - master
+
+schedules:
+  - cron: "0 0 * * *"
+    displayName: Daily midnight build
+    branches:
+      include:
+        - main
+        - master
+    always: true
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  TEST_ENV: 'ci'
+
+jobs:
+  - job: PlaywrightTests
+    displayName: 'Playwright Tests'
+    timeoutInMinutes: 60
+    strategy:
+      matrix:
+        e2e_chromium:
+          testFile: 'tests/enhanced-e2e-journey.spec.js'
+          browser: 'chromium'
+        e2e_firefox:
+          testFile: 'tests/enhanced-e2e-journey.spec.js'
+          browser: 'firefox'
+        smoke_chromium:
+          testFile: 'tests/e2e-user-journey.spec.js'
+          browser: 'chromium'
+
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '18.x'
+        displayName: 'Install Node.js'
+
+      - script: |
+          npm ci
+        displayName: 'Install dependencies'
+
+      - script: |
+          npx playwright install --with-deps $(browser)
+        displayName: 'Install Playwright browsers'
+
+      - script: |
+          npx playwright test $(testFile) --project=$(browser)
+        displayName: 'Run Playwright tests'
+
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: 'test-results/junit-*.xml'
+          mergeTestResults: true
+          testRunTitle: 'Playwright Tests - $(browser)'
+        displayName: 'Publish test results'
+
+      - task: PublishPipelineArtifact@1
+        condition: succeededOrFailed()
+        inputs:
+          targetPath: 'playwright-report'
+          artifact: 'playwright-report-$(browser)'
+          publishLocation: 'pipeline'
+        displayName: 'Publish Playwright report'
+
+      - task: PublishPipelineArtifact@1
+        condition: succeededOrFailed()
+        inputs:
+          targetPath: 'test-results'
+          artifact: 'test-results-$(browser)'
+          publishLocation: 'pipeline'
+        displayName: 'Publish test results'

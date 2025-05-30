@@ -1,0 +1,44 @@
+# Node.js dependencies
+node_modules/
+
+# Playwright specific
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/screenshots/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test artifacts
+/allure-results/
+/allure-report/
+/mochawesome-report/
+/coverage/
+
+# Build artifacts
+/dist/
+/build/
+
+# Temporary files
+*.tmp
+*.temp

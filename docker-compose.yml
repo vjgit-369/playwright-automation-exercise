@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  playwright-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./test-results:/app/test-results
+      - ./playwright-report:/app/playwright-report
+    environment:
+      - TEST_ENV=docker
+      - CI=true
+    command: npm test
+    
+  playwright-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9323:9323"
+    volumes:
+      - ./test-results:/app/test-results
+      - ./playwright-report:/app/playwright-report
+    environment:
+      - TEST_ENV=docker
+      - CI=true
+    command: npx playwright show-report --host 0.0.0.0
