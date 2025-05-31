@@ -2,7 +2,7 @@
 
 This project implements a comprehensive end-to-end test automation suite for AutomationExercise.com using Playwright with MCP server integration. The test suite automates a complete e-commerce user journey from registration to order completion.
 
-[![Playwright Tests](https://github.com/vjgit-369/playwright-automation-exercise/actions/workflows/playwright.yml/badge.svg)](https://github.com/vjgit-369/playwright-automation-exercise/actions/workflows/playwright.yml)
+[![Playwright Tests](https://github.com/vijay2023/playwright-automation-exercise/actions/workflows/playwright.yml/badge.svg)](https://github.com/vijay2023/playwright-automation-exercise/actions/workflows/playwright.yml)
 
 ## Project Structure
 
@@ -160,10 +160,28 @@ The GitHub Actions workflow is configured in `.github/workflows/playwright.yml` 
 - Daily scheduled runs
 - Artifact storage for test reports and screenshots
 
-To use GitHub Actions:
-1. Push your code to GitHub
+The project is configured with GitHub Actions for continuous integration. Features include:
+
+1. Automated test execution on push/pull requests
 2. Tests will run automatically on push to main/master branches
 3. View results in the Actions tab of your repository
+4. Test artifacts (screenshots, reports, logs) are uploaded using the `actions/upload-artifact@v3` action
+
+### Downloading Test Artifacts
+
+After a workflow run completes, you can download the test artifacts from the GitHub Actions interface:
+
+1. Go to the Actions tab in your repository
+2. Select the workflow run you want to download artifacts from
+3. Click on the "Artifacts" dropdown menu
+4. Select the artifact you want to download (e.g., test reports, screenshots)
+
+The artifacts will include:
+- Test execution reports
+- Screenshots from failed tests
+- Network logs
+- Performance metrics
+- Test data logs
 
 ### Docker
 

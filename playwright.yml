@@ -1,0 +1,66 @@
+name: Playwright E2E Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * *'  # Daily at midnight
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chromium, firefox]
+        include:
+          - browser: chromium
+            category: e2e
+          - browser: chromium
+            category: smoke
+          - browser: firefox
+            category: e2e
+          - browser: firefox
+            category: smoke
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: |
+          if [ "${{ matrix.category }}" = "e2e" ]; then
+            npm test -- --browser=${{ matrix.browser }}
+          else
+            npm test -- --browser=${{ matrix.browser }} --testDir=tests/smoke
+          fi
+        env:
+          CI: true
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-results-${{ matrix.browser }}-${{ matrix.category }}
+          path: |
+            test-results/**/*.html
+            test-results/**/*.json
+            test-results/**/*.png
+            test-results/**/*.log
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        if: always()
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
