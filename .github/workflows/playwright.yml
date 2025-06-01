@@ -1,5 +1,4 @@
 name: Playwright Tests
-
 on:
   push:
     branches: [ main, master ]
@@ -7,7 +6,6 @@ on:
     branches: [ main, master ]
   schedule:
     - cron: '0 0 * * *'  # Run daily at midnight UTC
-
 jobs:
   test:
     name: 'Playwright Tests'
